@@ -1,71 +1,80 @@
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+.modal-login {		
+	color: #636363;
+	width: 350px;
 }
-
-body {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 100%;
-    color: #000;
-    background: #407189;
-    margin: 0;
+.modal-login .modal-content {
+	padding: 20px;
+	border-radius: 5px;
+	border: none;
 }
-
-#container {
-    margin: 2em auto;
-    width: 740px;
-    padding: 2em 4em;
-    background: #f1f7dc;
+.modal-login .modal-header {
+	border-bottom: none;   
+	position: relative;
+	justify-content: center;
 }
-
-h1, h2 {
-    font-family: 'Droid Serif', serif;
-    font-size: 3em;
-    margin: 0;
-		padding-bottom: 1em;
+.modal-login h4 {
+	text-align: center;
+	font-size: 26px;
+	margin: 30px 0 -15px;
 }
-
-h2 {
-    font-size: 2em;
+.modal-login .form-control:focus {
+	border-color: #70c5c0;
 }
-
-p, li {
-    font-size: 1.4em;
+.modal-login .form-control, .modal-login .btn {
+	min-height: 40px;
+	border-radius: 3px; 
 }
-
-p.credit {
-	font-size: 0.9em;
+.modal-login .close {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+}	
+.modal-login .modal-footer {
+	background: #ecf0f1;
+	border-color: #dee4e7;
+	text-align: center;
+	justify-content: center;
+	margin: 0 -20px -20px;
+	border-radius: 5px;
+	font-size: 13px;
 }
-
-img {
-	display: block;
-	margin: auto;
-	max-width: 100%;
+.modal-login .modal-footer a {
+	color: #999;
+}		
+.modal-login .avatar {
+	position: absolute;
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	top: -70px;
+	width: 95px;
+	height: 95px;
+	border-radius: 50%;
+	z-index: 9;
+	background: #60c7c1;
+	padding: 15px;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
 }
-
-/* links */
-
-a {
-    color: #1484bc;
-    text-decoration: none;
+.modal-login .avatar img {
+	width: 100%;
 }
-
-a:hover {
-    color: #407189;
-    text-decoration: underline;
+.modal-login.modal-dialog {
+	margin-top: 80px;
 }
-
-
-/* media queries */
-
-@media (max-width: 800px) {
-    body {
-        background: #f1f7dc;
-    }
-    #container {
-        margin: 0;
-        width: 100%;
-        padding: 2em;
-    }
+.modal-login .btn, .modal-login .btn:active {
+	color: #fff;
+	border-radius: 4px;
+	background: #60c7c1 !important;
+	text-decoration: none;
+	transition: all 0.4s;
+	line-height: normal;
+	border: none;
+}
+.modal-login .btn:hover, .modal-login .btn:focus {
+	background: #45aba6 !important;
+	outline: none;
+}
+.trigger-btn {
+	display: inline-block;
+	margin: 100px auto;
 }
