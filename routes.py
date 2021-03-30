@@ -9,6 +9,9 @@ from hashlib import md5
 from datetime import date
 from werkzeug.security import check_password_hash, generate_password_hash
 from models import db, Admin, User
+import tmdbsimple as tmbd
+import json
+tmbd.API_KEY='9d442b83bb8972605022892d3c12fb0e'
 app = Flask(__name__)
 # configuration
 PER_PAGE = 30
@@ -111,7 +114,20 @@ def logoutAdmin():
 @app.route('/')
 @app.route('/index.html')
 def index():
-    return render_template('index.html', the_title='Dude, Where\'s My Movie?')
+        import requests
+        
+        search = tmbd.Movies(603)
+        response1 = search.info()
+        
+        imdb_id = '603'
+        url = 'https://api.themoviedb.org/3/movie/'+imdb_id+'/watch/providers?api_key=9d442b83bb8972605022892d3c12fb0e'
+        response = requests.get(url)
+        test = json.loads(response.text)
+
+
+        
+        return render_template('index.html', the_title='where movie', response= test['results']['US'])
+
 
 @app.route('/symbol.html')
 def symbol():
