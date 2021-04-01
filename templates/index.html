@@ -3,5 +3,10 @@
 
 {% block content %}
 <h1>Dude Where is My Movie?</h1>
-<h2>{{response}}</h2>
+<form action="/movie" method="post" id="form" role="search">
+  <input type="search" id="query" name="movieTitle"
+   placeholder="Enter Movie Title"
+   aria-label="Search for a Movie Avaliablitiy">
+  <button type="submit">Search</button>
+</form>
 {% endblock content %}

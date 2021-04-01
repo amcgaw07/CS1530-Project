@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>Here is Your Movie</h1>
+{%if id%}
+{{response}}
+<!--
+	{%for item in response%}
+	<h2>{{response['provider_name']}}: <a href="{{item['link']}}" target="_blank">{{item['link']}}</a></h2>
+	{%endfor%}
+ -->
+{%else%}
+{% for item in response%}
+<h2><a href="{{ url_for('movieTest', movieId=item['id'],movieTitle = item['original_title'])}}" >{{item['original_title']}}</a></h2>
+{%endfor%}
+{%endif%}
+{% endblock content %}

@@ -112,22 +112,34 @@ def logoutAdmin():
 
 
 @app.route('/')
-@app.route('/index.html')
+@app.route('/index.html',methods=['GET','POST'])
 def index():
-        import requests
-        
-        search = tmbd.Movies(603)
-        response1 = search.info()
-        
-        imdb_id = '603'
-        url = 'https://api.themoviedb.org/3/movie/'+imdb_id+'/watch/providers?api_key=9d442b83bb8972605022892d3c12fb0e'
-        response = requests.get(url)
-        test = json.loads(response.text)
+    return render_template('index.html', the_title='where movie')
 
+@app.route('/movie', methods=['GET','POST'])
+def movie():
+    import requests
 
-        
-        return render_template('index.html', the_title='where movie', response= test['results']['US'])
+    if request.method == "POST":
+    	movieTitle = request.form['movieTitle']
+    
+    	url = "https://api.themoviedb.org/3/search/movie?api_key=9d442b83bb8972605022892d3c12fb0e&language=en-US&query="+movieTitle+"&page=1&include_adult=false"
+    	response = requests.get(url)
+    	test = json.loads(response.text)
+    
+    	#imdb_id = '603'
+    	#url = 'https://api.themoviedb.org/3/movie/'+imdb_id+'/watch/providers?api_key=9d442b83bb8972605022892d3c12fb0e'
+    	#response = requests.get(url)
+    	#test = json.loads(response.text)
+    return render_template('movie.html', the_title=movieTitle, response = test['results'])
 
+@app.route('/movieTest/<movieTitle>/<movieId>', methods=['GET','POST'])
+def movieTest(movieId,movieTitle):
+	import requests
+	url = 'https://api.themoviedb.org/3/movie/'+movieId+'/watch/providers?api_key=9d442b83bb8972605022892d3c12fb0e'
+	response = requests.get(url)
+	test = json.loads(response.text)
+	return render_template('movie.html', the_title=movieTitle, id=movieId, response = test['results']['US'])
 
 @app.route('/symbol.html')
 def symbol():
