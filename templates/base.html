@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css?family=Droid+Serif|Source+Sans+Pro" rel="stylesheet">
 	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
- <link rel="stylesheet" href="/static/css/main.css">
+ <link rel="stylesheet" href="/static/css/loginModal.css">
   {% if title %}
 <title>{{ title }} Hello, world!</title>
 {% else %}<title>Wheres my movie?</title>
@@ -17,7 +17,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">DWMM</a>
+    <a class="navbar-brand" href="#"><image src="static/images/navbar-brand.png"></image></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -27,12 +27,12 @@
         <li class="nav-item active">
           <a class="nav-link" href="{{ url_for('index') }}">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="{{ url_for('symbol') }}">Symbol</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('myth') }}">Myth</a>
-        </li>
+        </li> -->
       </ul>
       {% if g.admin %}
       <a class="nav-link trigger-btn-nav" data-toggle="modal" href="#myModal">Admin</a>

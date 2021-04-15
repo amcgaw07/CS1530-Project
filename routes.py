@@ -114,12 +114,17 @@ def logoutAdmin():
 @app.route('/')
 @app.route('/index.html',methods=['GET','POST'])
 def index():
-    return render_template('index.html', the_title='where movie')
+	url = "https://api.themoviedb.org/3/movie/popular?api_key=9d442b83bb8972605022892d3c12fb0e&language=en-US&page=1"
+	response = requests.get(url)
+	popularMovies = json.loads(response.text)
+
+	popular1 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][0]['poster_path'], popularMovies['results'][0]['original_title'], popularMovies['results'][0]['overview']]
+	popular2 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][1]['poster_path'], popularMovies['results'][1]['original_title'], popularMovies['results'][1]['overview']]
+	popular3 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][2]['poster_path'], popularMovies['results'][2]['original_title'], popularMovies['results'][2]['overview']]
+	return render_template('index.html', the_title='Where\'s my Movie?', movie1=popular1, movie2=popular2, movie3=popular3)
 
 @app.route('/movie', methods=['GET','POST'])
 def movie():
-    import requests
-
     if request.method == "POST":
     	movieTitle = request.form['movieTitle']
     
@@ -131,7 +136,7 @@ def movie():
     	#url = 'https://api.themoviedb.org/3/movie/'+imdb_id+'/watch/providers?api_key=9d442b83bb8972605022892d3c12fb0e'
     	#response = requests.get(url)
     	#test = json.loads(response.text)
-    return render_template('movie.html', the_title=movieTitle, response = test['results'])
+    	return render_template('movie.html', the_title=movieTitle, response = test['results'])
 
 @app.route('/movieTest/<movieTitle>/<movieId>', methods=['GET','POST'])
 def movieTest(movieId,movieTitle):
