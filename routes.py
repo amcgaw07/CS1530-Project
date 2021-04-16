@@ -8,7 +8,7 @@ import os
 from hashlib import md5
 from datetime import date
 from werkzeug.security import check_password_hash, generate_password_hash
-from models import db, Admin, User
+from models import db, Admin, User, Favorite, Subscription
 import tmdbsimple as tmbd
 import json
 tmbd.API_KEY='9d442b83bb8972605022892d3c12fb0e'
@@ -104,6 +104,50 @@ def login():
 		else:
 			error = 'Invalid username or password'
 	return redirect(url_for('index'))#render_template("index.html", error=error, movie1=popular1, movie2=popular2, movie3=popular3)
+	
+# User account page
+@app.route('/accountPage', methods=['GET', 'POST'])
+def accountPage():
+	error = None
+	user = User.query.filter_by(username=g.user.username).first()
+	if request.method == 'POST':
+		if not request.form['subscription']:
+			error = 'You have to enter a streaming subscription'
+		else:
+			service = request.form['subscription']
+			if Subscription.query.filter_by(user_id=user.user_id, subscription=service).first():
+				error="You already added that streamings service to your subscriptions."
+			else:
+				db.session.add(Subscription(user_id=user.user_id, subscription=service))
+				db.session.commit()
+	favorites = Favorite.query.filter_by(user_id=user.user_id).all()
+	subscriptions = Subscription.query.filter_by(user_id=user.user_id).all()
+	favorites = sorted(favorites, key=lambda favorite: favorite.movie)
+	subscriptions = sorted(subscriptions, key=lambda subscription: subscription.subscription)
+	return render_template('accountPage.html', favorites=favorites, subscriptions=subscriptions, error=error)
+
+# User account page
+@app.route('/favorite/<movie>', methods=['GET', 'POST'])
+def favorite(movie):
+	user = User.query.filter_by(username=g.user.username).first()
+	db.session.add(Favorite(user_id=user.user_id, movie=movie))
+	db.session.commit()
+	return redirect(url_for('accountPage'))
+
+@app.route('/unfavorite/<movie>', methods=['GET', 'POST'])
+def unfavorite(movie):
+	user = User.query.filter_by(username=g.user.username).first()
+	db.session.delete(Favorite.query.filter_by(user_id=user.user_id, movie=movie).first())
+	db.session.commit()
+	return redirect(url_for('accountPage'))
+
+@app.route('/cancel_subscription/<service>', methods=['GET', 'POST'])
+def cancel_subscription(service):
+	user = User.query.filter_by(username=g.user.username).first()
+	db.session.delete(Subscription.query.filter_by(user_id=user.user_id, subscription=service).first())
+	db.session.commit()
+	return redirect(url_for('accountPage'))
+	
 @app.route('/logoutUser')
 def logoutUser():
 	"""Logs the user member out."""

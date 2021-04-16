@@ -30,3 +30,31 @@ class User(db.Model):
 	
 	def __repr__(self):
 		return '<User {}>'.format(self.username)
+		
+class Favorite(db.Model):
+	__tablename__ = 'favorite'
+	favorite_id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+	movie = db.Column(db.Text, nullable=False)
+	
+	def __init__(self, user_id, movie):
+		self.user_id = user_id
+		self.movie = movie
+	
+	def __repr__(self):
+		return '<Movie {}>'.format(self.movie)
+	
+class Subscription(db.Model):
+	__tablename__ = 'subscription'
+	subscription_id = db.Column(db.Integer, primary_key=True)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+	subscription = db.Column(db.Text, nullable=False)
+	
+	def __init__(self, user_id, subscription):
+		self.user_id = user_id
+		self.subscription = subscription
+	
+	def __repr__(self):
+		return '<Subscription {}>'.format(self.subscription)
+		
+		

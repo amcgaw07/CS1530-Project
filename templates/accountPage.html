@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Your Account{% endblock %}
+
+{% block content %}
+<h2>Your Favorited Movies</h2><br/>
+	<table>
+		{% for favorite in favorites %}
+			<p>Movie: {{ favorite.movie }}
+			<form action="{{ url_for('unfavorite', movie=favorite.movie) }}" method="post">
+				<input type="hidden" name="favorite_id" value="{{ favorite.favorite_id }}">
+				<div class="actions"><input type="submit" value="Unfavorite"></div></form>
+			</p>
+		{% else %}
+			You don't have any favorited movies<br/><br/>
+		{% endfor %}
+	</table>
+<h2>Your Streaming Service Subscriptions</h2><br/>
+	{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+	<table>
+		{% for subscription in subscriptions %}
+			<p>Streaming Serivice: {{ subscription.subscription }}
+			<form action="{{ url_for('cancel_subscription', service=subscription.subscription) }}" method="post">
+				<input type="hidden" name="subscription_id" value="{{ subscription.subscription_id }}">
+				<div class="actions"><input type="submit" value="Remove Subscription"></div></form>
+			</p>
+		{% else %}
+			You don't have any streaming subscriptions.<br/><br/>
+		{% endfor %}
+	</table>
+	<br/><br/>
+	<form action="" method="post" id="subscriptionForm">
+		<dt>Enter Subscription:
+		<input type="text" id="subscription" name="subscription" value="" />
+		<br/>
+		<br/>
+		<div class="actions"><input type="submit" id="Add" value="Add"></div>
+	</form>
+{% endblock %}

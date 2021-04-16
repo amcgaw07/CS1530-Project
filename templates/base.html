@@ -37,7 +37,7 @@
       {% if g.admin %}
       <a class="nav-link trigger-btn-nav" data-toggle="modal" href="#myModal">Admin</a>
       {% elif g.user %}
-      <a class="nav-link trigger-btn-nav" data-toggle="modal" href="">My Account</a>
+      <a class="nav-link trigger-btn-nav" href="{{ url_for('accountPage') }}">My Account</a>
       <a class="nav-link trigger-btn-nav" href="{{url_for('logoutUser')}}">Logout, [{{g.user.username}}]</a>
       {% else %}
       <a class="nav-link trigger-btn-nav" data-toggle="modal" href="#myModal">Login</a>
