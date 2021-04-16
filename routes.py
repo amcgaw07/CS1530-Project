@@ -22,6 +22,15 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(app.root_path, 'users.db')
 app.config.from_object(__name__)
 app.config.from_envvar('USER_SETTINGS', silent=True)
 
+#3 popular movies
+url = "https://api.themoviedb.org/3/movie/popular?api_key=9d442b83bb8972605022892d3c12fb0e&language=en-US&page=1"
+response = requests.get(url)
+popularMovies = json.loads(response.text)
+
+popular1 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][0]['poster_path'], popularMovies['results'][0]['original_title'], popularMovies['results'][0]['overview']]
+popular2 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][1]['poster_path'], popularMovies['results'][1]['original_title'], popularMovies['results'][1]['overview']]
+popular3 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][2]['poster_path'], popularMovies['results'][2]['original_title'], popularMovies['results'][2]['overview']]
+
 db.init_app(app)
 
 @app.cli.command('initdb')
@@ -76,7 +85,7 @@ def register():
 			db.session.commit()
 			flash('You were successfully registered and can login now')
 			return redirect(url_for('login'))
-	return render_template('index.html', error=error)
+	return redirect(url_for('index'))#render_template('index.html', error=error, movie1=popular1, movie2=popular2, movie3=popular3)
 
 # User login
 @app.route('/login', methods=['GET', 'POST'])
@@ -94,7 +103,7 @@ def login():
 			return redirect(url_for('index', username=request.form['username'], password=request.form['password']))
 		else:
 			error = 'Invalid username or password'
-	return render_template("index.html", error=error)
+	return redirect(url_for('index'))#render_template("index.html", error=error, movie1=popular1, movie2=popular2, movie3=popular3)
 @app.route('/logoutUser')
 def logoutUser():
 	"""Logs the user member out."""
@@ -114,13 +123,7 @@ def logoutAdmin():
 @app.route('/')
 @app.route('/index.html',methods=['GET','POST'])
 def index():
-	url = "https://api.themoviedb.org/3/movie/popular?api_key=9d442b83bb8972605022892d3c12fb0e&language=en-US&page=1"
-	response = requests.get(url)
-	popularMovies = json.loads(response.text)
 
-	popular1 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][0]['poster_path'], popularMovies['results'][0]['original_title'], popularMovies['results'][0]['overview']]
-	popular2 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][1]['poster_path'], popularMovies['results'][1]['original_title'], popularMovies['results'][1]['overview']]
-	popular3 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][2]['poster_path'], popularMovies['results'][2]['original_title'], popularMovies['results'][2]['overview']]
 	return render_template('index.html', the_title='Where\'s my Movie?', movie1=popular1, movie2=popular2, movie3=popular3)
 
 @app.route('/movie', methods=['GET','POST'])
@@ -144,7 +147,12 @@ def movieTest(movieId,movieTitle):
 	url = 'https://api.themoviedb.org/3/movie/'+movieId+'/watch/providers?api_key=9d442b83bb8972605022892d3c12fb0e'
 	response = requests.get(url)
 	test = json.loads(response.text)
-	return render_template('movie.html', the_title=movieTitle, id=movieId, response = test['results']['US'])
+	#pass in general movie info
+	url_movie_info = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=9d442b83bb8972605022892d3c12fb0e&language=en-USh"
+	response_movie_info = requests.get(url_movie_info)
+	movie_info = json.loads(response_movie_info.text)
+
+	return render_template('movie.html', the_title=movieTitle, id=movieId, response = test['results']['US'],  response2 = movie_info)
 
 @app.route('/symbol.html')
 def symbol():

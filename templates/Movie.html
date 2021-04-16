@@ -2,17 +2,59 @@
 
 
 {% block content %}
-<h1>Here is Your Movie</h1>
+
 {%if id%}
-{{response}}
+<h1 class="pb-6 d-flex justify-content-center">Dude we found your movie!</h1>
+<!-- {{response2}}
+{{response}} -->
+<div class="container">
+		<div class="row pb-4">
+		
+			<div class="col-4">
+				<img src="https://image.tmdb.org/t/p/original/{{response2['poster_path']}}" style="width: 200px; height:300px;"></img>
+			</div>
+			<div class="col-4">
+				<h2>{{response2['original_title']}}</h2>
+				<p>{{response2['overview']}}</p>
+			</div>
+		</div>
+	<div class="row">
+	{%for item in response['buy']%}
+	
+			<div class="col-1 mx-auto">
+				<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
+			</div>
+
+	
+	{%endfor%}
+	</div>
+	
+</div>
+
 <!--
 	{%for item in response%}
 	<h2>{{response['provider_name']}}: <a href="{{item['link']}}" target="_blank">{{item['link']}}</a></h2>
 	{%endfor%}
  -->
 {%else%}
+<h1 class="pb-6 d-flex justify-content-center">Search Results:</h1>
 {% for item in response%}
-<h2><a href="{{ url_for('movieTest', movieId=item['id'],movieTitle = item['original_title'])}}" >{{item['original_title']}}</a></h2>
+<div class="container">
+
+	<div class="row">
+		
+		<div class="col-3 pb-2">
+		<img src="https://image.tmdb.org/t/p/original/{{item['poster_path']}}" style="width: 200px; height:300px;"></img>
+		</div>
+
+		<div class="col-4 ml-0">
+		<h2><a href="{{ url_for('movieTest', movieId=item['id'],movieTitle = item['original_title'])}}" >{{item['original_title']}}</a></h2>
+		<p>{{item['overview']}}</p>
+		</div>
+	</div>
+
+<hr>
+</div>
 {%endfor%}
 {%endif%}
 {% endblock content %}
