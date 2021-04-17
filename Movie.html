@@ -18,30 +18,43 @@
 				<p>{{response2['overview']}}</p>
 			</div>
 		</div>
+		
 	<div class="row">
 	
-	<h4>Streaming:<h4>
+	{% if g.user %}
+		<h4>Favorite: <h4>
+		{%if isFavorite %}
+			<form action="{{ url_for('unfavorite', movie=the_title) }}" method="post">
+				<input type="hidden" name="favorite_id" value="Unfavorite">
+				<div class="actions"><input type="submit" value="Unfavorite"></div></form>
+		{%else%}
+				
+			<form action="{{ url_for('favorite', movie=the_title) }}" method="post">
+				<input type="hidden" name="favorite" value="Favorite">
+				<div class="actions"><input type="submit" value="Favorite"></div></form>
+		{%endif%}
+	{%endif%}
+	</div>
+	
+	<h4>Streaming: <h4>
+	<div class="row">
 	{%for item in response['flatrate']%}
-			<div class="col-1 mx-auto" style="position: relative; width: 250px; float: left;">
-				<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
-			</div>
-			
+			<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
 			
 	{%endfor%}
 	</div>
 	
-	<h4>Rent:<h4>
+	<h4>Rent: <h4>
 	<div class="row">
 	{%for item in response['rate']%}
 			<div class="col-1 mx-auto" style="position: relative; width: 250px; float: left;">>
 				<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
 			</div>
-
 	
 	{%endfor%}
 	</div>
 	
-	<h4>Buy:<h4>
+	<h4>Buy: <h4>
 	<div class="row">
 	{%for item in response['buy']%}
 	
@@ -49,6 +62,15 @@
 				<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
 			</div>
 
+	
+	{%endfor%}
+	</div>
+	
+	<h4>Reviews:<h4>
+	<div class="row">
+	{%for item in reviews['results']%}
+			<p>{{item['author']}}</p>
+			<p>{{item['content']}}</p>
 	
 	{%endfor%}
 	</div>

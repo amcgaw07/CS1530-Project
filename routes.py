@@ -31,6 +31,7 @@ popular1 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][0]
 popular2 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][1]['poster_path'], popularMovies['results'][1]['original_title'], popularMovies['results'][1]['overview']]
 popular3 = ["https://image.tmdb.org/t/p/original/" + popularMovies['results'][2]['poster_path'], popularMovies['results'][2]['original_title'], popularMovies['results'][2]['overview']]
 
+
 db.init_app(app)
 
 @app.cli.command('initdb')
@@ -124,6 +125,7 @@ def accountPage():
 	subscriptions = Subscription.query.filter_by(user_id=user.user_id).all()
 	favorites = sorted(favorites, key=lambda favorite: favorite.movie)
 	subscriptions = sorted(subscriptions, key=lambda subscription: subscription.subscription)
+	onAccount=True
 	return render_template('accountPage.html', favorites=favorites, subscriptions=subscriptions, error=error)
 
 # User account page
@@ -199,8 +201,18 @@ def movieTest(movieId,movieTitle):
 	url_movie_reviews = "https://api.themoviedb.org/3/movie/"+movieId+"/reviews?api_key=9d442b83bb8972605022892d3c12fb0e&language=en-US&page=1"
 	reponse_movie_review = requests.get(url_movie_reviews)
 	movie_reviews = json.loads(reponse_movie_review.text)
+	
+	isFavorite=False
+	if (g.user is not None):
+		user = User.query.filter_by(username=g.user.username).first()
+		movie = Favorite.query.filter_by(user_id=user.user_id, movie=movieTitle).first()
+		if (movie is None):
+			isFavorite=False
+		else:
+			isFavorite=True
+			print(isFavorite)
 
-	return render_template('movie.html', the_title=movieTitle, id=movieId, response = test['results']['US'],  response2 = movie_info, reviews = movie_reviews)
+	return render_template('movie.html', the_title=movieTitle, id=movieId, response = test['results']['US'],  response2 = movie_info, reviews = movie_reviews, isFavorite=isFavorite)
 
 @app.route('/symbol.html')
 def symbol():
