@@ -198,7 +198,7 @@ def movieTest(movieId,movieTitle):
 
 	url_movie_reviews = "https://api.themoviedb.org/3/movie/"+movieId+"/reviews?api_key=9d442b83bb8972605022892d3c12fb0e&language=en-US&page=1"
 	reponse_movie_review = requests.get(url_movie_reviews)
-	movie_reviews = json.loads(reponse_movie_review)
+	movie_reviews = json.loads(reponse_movie_review.text)
 
 	return render_template('movie.html', the_title=movieTitle, id=movieId, response = test['results']['US'],  response2 = movie_info, reviews = movie_reviews)
 
