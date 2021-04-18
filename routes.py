@@ -162,7 +162,6 @@ def indexDefault():
 
 	return render_template('index.html', the_title='Where\'s my Movie?', movie1=popular1, movie2=popular2, movie3=popular3)
 
-@app.route('/')
 @app.route('/index.html/<error>',methods=['GET','POST'])
 def index(error):
 	print(error)
