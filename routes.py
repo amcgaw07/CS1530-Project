@@ -82,7 +82,7 @@ def register():
 		elif get_user_id(request.form['username']) is not None:
 			error = 'The username is already taken'
 		else:
-			db.session.add(User(username=request.form['username'], password=request.form['password']))
+			db.session.add(User(username=request.form['username'], password=generate_password_hash(request.form['password'])))
 			db.session.commit()
 			flash('You were successfully registered and can login now')
 			return redirect(url_for('login'))
@@ -98,10 +98,12 @@ def login():
 			session['admin_id'] = admin.query.filter_by(username=request.form['username']).first().admin_id
 			flash('You were logged in')
 			return redirect(url_for('admin'))
-		elif not User.query.filter_by(username=request.form['username'], password=request.form['password']).first() is None:
-			session['user_id'] = User.query.filter_by(username=request.form['username']).first().user_id
-			flash('You were logged in')
-			return redirect(url_for('index', username=request.form['username'], password=request.form['password']))
+		elif not User.query.filter_by(username=request.form['username']).first() is None:
+			user = User.query.filter_by(username=request.form['username']).first()
+			if check_password_hash(user.password, request.form['password']):
+				session['user_id'] = User.query.filter_by(username=request.form['username']).first().user_id
+				flash('You were logged in')
+				return redirect(url_for('index'))
 		else:
 			error = 'Invalid username or password'
 	return redirect(url_for('index'))#render_template("index.html", error=error, movie1=popular1, movie2=popular2, movie3=popular3)
