@@ -97,7 +97,7 @@ def login():
 		if not Admin.query.filter_by(username=request.form['username'], password=request.form['password']).first() is None:
 			session['admin_id'] = admin.query.filter_by(username=request.form['username']).first().admin_id
 			flash('You were logged in')
-			return redirect(url_for('admin'))
+			return redirect(url_for('index', username=request.form['username'], password=request.form['password']))
 		elif not User.query.filter_by(username=request.form['username'], password=request.form['password']).first() is None:
 			session['user_id'] = User.query.filter_by(username=request.form['username']).first().user_id
 			flash('You were logged in')
