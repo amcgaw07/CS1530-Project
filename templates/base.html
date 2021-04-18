@@ -34,9 +34,7 @@
           <a class="nav-link" href="{{ url_for('myth') }}">Myth</a>
         </li> -->
       </ul>
-      {% if g.admin %}
-      <a class="nav-link trigger-btn-nav" data-toggle="modal" href="#myModal">Admin</a>
-      {% elif g.user %}
+      {% if g.user %}
       <a class="nav-link trigger-btn-nav" href="{{ url_for('accountPage') }}">My Account</a>
       <a class="nav-link trigger-btn-nav" href="{{url_for('logoutUser')}}">Logout, [{{g.user.username}}]</a>
       {% else %}
@@ -133,5 +131,3 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
