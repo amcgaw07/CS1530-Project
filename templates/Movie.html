@@ -4,82 +4,118 @@
 {% block content %}
 
 {%if id%}
-<h1 class="pb-6 d-flex justify-content-center">Dude we found your movie!</h1>
+<style>
+	body { background-color: lightgrey;}
+  </style>
+
+<div class="alert alert-success" role="alert">
+	<h1 class="pb-6 d-flex justify-content-center">Dude, we found your movie!</h1>
+  </div>
+
 <!-- {{response2}}
 {{response}} -->
 <div class="container">
 		<div class="row pb-4">
 		
-			<div class="col-4">
-				<img src="https://image.tmdb.org/t/p/original/{{response2['poster_path']}}" style="width: 200px; height:300px;"></img>
+			<div class="col-4 mt-4 pt-4">
+				<img src="https://image.tmdb.org/t/p/original/{{response2['poster_path']}}" style="width: 300px; height:450px; border-radius: 25px;"></img>
 			</div>
-			<div class="col-4">
-				<h2>{{response2['original_title']}}</h2>
-				<p>{{response2['overview']}}</p>
+			<div class="col-5">
+				<h2 class="display-4 font-weight-bold">{{response2['original_title']}}</h2>
+				<br>
+				<p class="display-4 font-italic" style="font-size: 1.4rem">{{response2['overview']}}</p>
 			</div>
 		</div>
 		
 	<div class="row">
 	
 	{% if g.user %}
-		<h4>Favorite: <h4>
+		
 		{%if isFavorite %}
+		<!-- <h4>Unfavorite:&nbsp </h4> -->
 			<form action="{{ url_for('unfavoriteSearch', movie=the_title, movie_id=id) }}" method="post">
 				<input type="hidden" name="favorite_id" value="Unfavorite">
-				<div class="actions"><input type="submit" value="Unfavorite"></div></form>
+				<div class="actions"><button class="btn btn-danger" type="submit" value="Unfavorite"><i class="fas fa-star"></i> Unfavorite</button></div></form>
 		{%else%}
-				
+			<!-- <h4>Favorite:&nbsp <h4>	 -->
 			<form action="{{ url_for('favoriteSearch', movie=the_title, movie_id=id) }}" method="post">
 				<input type="hidden" name="favorite" value="Favorite">
-				<div class="actions"><input type="submit" value="Favorite"></div></form>
+				<div class="actions"><button class="btn btn-success" type="submit" value="Favorite"><i class="far fa-star"></i> Favorite</button></div></form>
 		{%endif%}
 	{%endif%}
 	</div>
-	
-	<h4>Streaming: <h4>
+	<hr>
+	<!-- begin streaming -->
+	<!-- check if there is places to stream the movie, if not dont print anything -->
+	{%if response['flatrate']|length > 0%}
 	<div class="row">
+	<h4 class="display-4 mt-3" style="font-size:1.7rem">Streaming: </h4>	
+
 	{%for item in response['flatrate']%}
-			<a href="https://www.google.com/search?q={{item['provider_name']}}+{{the_title}}" target="_blank">
-			<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
-			</a>
+	<div class="col-1 mx-2" style="position: relative; width: 250px; float: left;">
+		<a href="https://www.google.com/search?q={{item['provider_name']}}+{{the_title}}" target="_blank">
+		<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px; border-radius: 25px;"></img>
+		</a>
+	</div>
 			
 	{%endfor%}
 	</div>
-	
-	<h4>Rent: <h4>
+	<hr>
+	{%endif%}
+	<!-- end streaming -->
+
+	<!-- begin rent -->
+	<!-- check if there is places to rent the movie, if not dont print anything -->
+	{%if response['rate']|length > 0%}
+	<h4 class="display-4" style="font-size:1.7rem">Rent: </h4>
 	<div class="row">
+		
 	{%for item in response['rate']%}
-			<div class="col-1 mx-auto" style="position: relative; width: 250px; float: left;">>
-				<a href="https://www.google.com/search?q={{item['provider_name']}}+{{the_title}}" target="_blank">
-				<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
-				</a>			
-			</div>
+	<div class="col-1 mx-2" style="position: relative; width: 250px; float: left;">>
+		<a href="https://www.google.com/search?q={{item['provider_name']}}+{{the_title}}" target="_blank">
+		<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px; border-radius: 25px;"></img>
+		</a>			
+	</div>
 	
 	{%endfor%}
 	</div>
-	
-	<h4>Buy: <h4>
-	<div class="row">
+	<hr>
+	{%endif%}
+	<!-- end rent -->
+
+	<!-- begin buy -->
+	<!-- check if there is places to buy the movie, if not dont print anything -->
+	{%if response['buy']|length > 0%}
+
+	<div class="row">	
+	<h4 class="display-4 mt-3" style="font-size:1.7rem">Buy: </h4>
 	{%for item in response['buy']%}
 	
-			<div class="col-1 mx-auto" style="position: relative; width: 250px; float: left;">
-				<a href="https://www.google.com/search?q={{item['provider_name']}}+{{the_title}}" target="_blank">
-				<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
-				</a>
-			</div>
+	<div class="col-1 mx-2" style="position: relative; width: 250px; float: left;">
+		<a href="https://www.google.com/search?q={{item['provider_name']}}+{{the_title}}" target="_blank">
+		<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px; border-radius: 25px;"></img>
+		</a>
+	</div>
 
 	
 	{%endfor%}
 	</div>
+	<hr>
+	{%endif%}
+	<!--  end buy -->
+
+	<h4 class="display-4 mt-3 pl-0 pt-4" style="font-size:1.7rem">Reviews:</h4>
+	<br>
 	
-	<h4>Reviews:<h4>
-	<div class="row">
 	{%for item in reviews['results']%}
-			<p>{{item['author']}}</p>
-			<p>{{item['content']}}</p>
-	
+	<div class="row">
+		<p><i class="fas fa-user"></i> &nbsp{{item['author']}}</p>
+		<p class="font-italic">{{item['content']}}</p>
+		<hr>
+		</div>
 	{%endfor%}
-	</div>
+	
+	
 	
 </div>
 
@@ -89,21 +125,33 @@
 	{%endfor%}
  -->
 {%else%}
-<h1 class="pb-6 d-flex justify-content-center">Search Results:</h1>
+<div class="alert alert-success" role="alert">
+	<h1 class="pb-6 d-flex justify-content-center">Search Results:</h1>
+  </div>
 {% for item in response%}
+<style>
+	body { background-color: lightgrey;}
+  </style>
 <div class="container">
 
 	<div class="row">
 		
 		<div class="col-3 pb-2">
-		<img src="https://image.tmdb.org/t/p/original/{{item['poster_path']}}" style="width: 200px; height:300px;"></img>
+		<a href="{{ url_for('movieTest', movieId=item['id'],movieTitle = item['original_title'])}}" ><img src="https://image.tmdb.org/t/p/original/{{item['poster_path']}}" style="width: 200px; height:300px;"></img></a>
 		</div>
 
 		<div class="col-4 ml-0">
-		<h2><a href="{{ url_for('movieTest', movieId=item['id'],movieTitle = item['original_title'])}}" >{{item['original_title']}}</a></h2>
-		<p>{{item['overview']}}</p>
+		<h2 class="display-4" style="font-size: 2.5rem"><a href="{{ url_for('movieTest', movieId=item['id'],movieTitle = item['original_title'])}}" >{{item['original_title']}}</a></h2>
+		<h1 class="display-4" style="font-size: 1rem">{{item['overview']}}</h1>
 		</div>
+		{%if item['vote_average'] > 6 %}
+		<h1 class="display-4 text-success" style="font-size: 1.4rem">{{item['vote_average']*10}}%</h1><h1 class="display-4" style="font-size: 1.4rem"> &nbspAverage Rating</h1>
+		{%else%}
+		<h1 class="display-4 text-danger" style="font-size: 1.4rem">{{item['vote_average']*10}}%</h1><h1 class="display-4" style="font-size: 1.4rem"> &nbspAverage Rating</h1>
+
+		{%endif%}
 	</div>
+		
 
 <hr>
 </div>

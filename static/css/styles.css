@@ -3953,6 +3953,7 @@ input[type=button].btn-block {
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
+  /* background-color: #2596be !important; */
 }
 .navbar .container,
 .navbar .container-fluid,
@@ -9996,7 +9997,7 @@ h3 {
   }
 }
 .features-icons {
-  padding-top: 7rem;
+  padding-top: 4rem;
   padding-bottom: 7rem;
 }
 .features-icons .features-icons-item {
