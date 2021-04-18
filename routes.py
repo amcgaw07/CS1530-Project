@@ -72,8 +72,8 @@ def register():
 			db.session.add(User(username=request.form['username'], password=generate_password_hash(request.form['password'])))
 			db.session.commit()
 			flash('You were successfully registered and can login now')
-			return redirect(url_for('login'))
-	return redirect(url_for('index'))#render_template('index.html', error=error, movie1=popular1, movie2=popular2, movie3=popular3)
+			return redirect(url_for('login', error=error))
+	return redirect(url_for('index', error=error))#render_template('index.html', error=error, movie1=popular1, movie2=popular2, movie3=popular3)
 
 # User login
 @app.route('/login', methods=['GET', 'POST'])
@@ -86,10 +86,10 @@ def login():
 			if check_password_hash(user.password, request.form['password']):
 				session['user_id'] = User.query.filter_by(username=request.form['username']).first().user_id
 				flash('You were logged in')
-				return redirect(url_for('index'))
+				return redirect(url_for('index', error=error))
 		else:
 			error = 'Invalid username or password'
-	return redirect(url_for('index'))#render_template("index.html", error=error, movie1=popular1, movie2=popular2, movie3=popular3)
+	return redirect(url_for('index', error=error))#render_template("index.html", error=error, movie1=popular1, movie2=popular2, movie3=popular3)
 	
 # User account page
 @app.route('/accountPage', methods=['GET', 'POST'])
@@ -158,10 +158,15 @@ def logoutUser():
 	return redirect(url_for('login'))
 
 @app.route('/')
-@app.route('/index.html',methods=['GET','POST'])
-def index():
+def indexDefault():
 
 	return render_template('index.html', the_title='Where\'s my Movie?', movie1=popular1, movie2=popular2, movie3=popular3)
+
+@app.route('/')
+@app.route('/index.html/<error>',methods=['GET','POST'])
+def index(error):
+	print(error)
+	return render_template('index.html', the_title='Where\'s my Movie?', error=error, movie1=popular1, movie2=popular2, movie3=popular3)
 
 @app.route('/movie', methods=['GET','POST'])
 def movie():

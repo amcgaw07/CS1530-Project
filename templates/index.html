@@ -9,6 +9,9 @@
    aria-label="Search for a Movie Avaliablitiy">
   <button type="submit">Search</button>
 </form> -->
+{% if error %}<div class="alert alert-danger" role="alert">
+  <strong>{{error}}</strong>
+</div>{% endif %}
 <link rel="stylesheet" href="/static/css/styles.css">
     <!-- Masthead-->
 <header class="masthead text-white text-center">
