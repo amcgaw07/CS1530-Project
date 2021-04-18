@@ -22,7 +22,7 @@
 	{%for item in response['buy']%}
 	
 			<div class="col-1 mx-auto">
-				<a href="https://www.google.com/search?q={{item['provider_name']}}">
+				<a href="https://www.google.com/search?q={{item['provider_name']}}+{{the_title}}" target="_blank">
 				<img src="https://image.tmdb.org/t/p/original/{{item['logo_path']}}" style="width: 75px; height:75px;"></img>
 				</a>
 			</div>
