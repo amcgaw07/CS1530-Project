@@ -128,7 +128,7 @@ def accountPage():
 	onAccount=True
 	return render_template('accountPage.html', favorites=favorites, subscriptions=subscriptions, error=error)
 
-# User account page
+
 @app.route('/favorite/<movie>', methods=['GET', 'POST'])
 def favorite(movie):
 	user = User.query.filter_by(username=g.user.username).first()
@@ -142,6 +142,21 @@ def unfavorite(movie):
 	db.session.delete(Favorite.query.filter_by(user_id=user.user_id, movie=movie).first())
 	db.session.commit()
 	return redirect(url_for('accountPage'))
+	
+
+@app.route('/favoriteSearch/<movie>/<movie_id>', methods=['GET', 'POST'])
+def favoriteSearch(movie, movie_id):
+	user = User.query.filter_by(username=g.user.username).first()
+	db.session.add(Favorite(user_id=user.user_id, movie=movie))
+	db.session.commit()
+	return redirect(url_for('movieTest', movieId=movie_id, movieTitle=movie))
+
+@app.route('/unfavoriteSearch/<movie>/<movie_id>', methods=['GET', 'POST'])
+def unfavoriteSearch(movie, movie_id):
+	user = User.query.filter_by(username=g.user.username).first()
+	db.session.delete(Favorite.query.filter_by(user_id=user.user_id, movie=movie).first())
+	db.session.commit()
+	return redirect(url_for('movieTest', movieId=movie_id, movieTitle=movie))
 
 @app.route('/cancel_subscription/<service>', methods=['GET', 'POST'])
 def cancel_subscription(service):

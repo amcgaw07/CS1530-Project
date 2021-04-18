@@ -24,12 +24,12 @@
 	{% if g.user %}
 		<h4>Favorite: <h4>
 		{%if isFavorite %}
-			<form action="{{ url_for('unfavorite', movie=the_title) }}" method="post">
+			<form action="{{ url_for('unfavoriteSearch', movie=the_title, movie_id=id) }}" method="post">
 				<input type="hidden" name="favorite_id" value="Unfavorite">
 				<div class="actions"><input type="submit" value="Unfavorite"></div></form>
 		{%else%}
 				
-			<form action="{{ url_for('favorite', movie=the_title) }}" method="post">
+			<form action="{{ url_for('favoriteSearch', movie=the_title, movie_id=id) }}" method="post">
 				<input type="hidden" name="favorite" value="Favorite">
 				<div class="actions"><input type="submit" value="Favorite"></div></form>
 		{%endif%}
