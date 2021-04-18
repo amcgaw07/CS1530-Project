@@ -159,13 +159,11 @@ def logoutUser():
 
 @app.route('/')
 def indexDefault():
-
 	return render_template('index.html', the_title='Where\'s my Movie?', error=None, movie1=popular1, movie2=popular2, movie3=popular3)
 
 @app.route('/')
 @app.route('/index.html/<error>',methods=['GET','POST'])
 def index(error):
-	print(error)
 	return render_template('index.html', the_title='Where\'s my Movie?', error=error, movie1=popular1, movie2=popular2, movie3=popular3)
 
 @app.route('/movie', methods=['GET','POST'])
