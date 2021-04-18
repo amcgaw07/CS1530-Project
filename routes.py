@@ -95,7 +95,7 @@ def login():
 	error = None
 	if request.method == 'POST':
 		if not Admin.query.filter_by(username=request.form['username'], password=request.form['password']).first() is None:
-			session['admin_id'] = admin.query.filter_by(username=request.form['username']).first().admin_id
+			session['admin_id'] = Admin.query.filter_by(username=request.form['username']).first().admin_id
 			flash('You were logged in')
 			return redirect(url_for('admin'))
 		elif not User.query.filter_by(username=request.form['username']).first() is None:
