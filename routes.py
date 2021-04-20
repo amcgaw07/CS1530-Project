@@ -87,6 +87,8 @@ def login():
 				session['user_id'] = User.query.filter_by(username=request.form['username']).first().user_id
 				flash('You were logged in')
 				return redirect(url_for('index', error=error))
+			else:
+				error = 'Invalid username or password'
 		else:
 			error = 'Invalid username or password'
 	return redirect(url_for('index', error=error))#render_template("index.html", error=error, movie1=popular1, movie2=popular2, movie3=popular3)
