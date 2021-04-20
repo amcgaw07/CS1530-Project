@@ -102,7 +102,7 @@ def accountPage():
 		else:
 			service = request.form['subscription']
 			if Subscription.query.filter_by(user_id=user.user_id, subscription=service).first():
-				error="You already added that streamings service to your subscriptions."
+				error="You already added that streaming service to your subscriptions."
 			else:
 				db.session.add(Subscription(user_id=user.user_id, subscription=service))
 				db.session.commit()
